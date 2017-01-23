@@ -2,6 +2,7 @@ package webdriverFramework;
 
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -39,10 +40,11 @@ public class SSMission {
         driver.findElement(By.xpath("//*[@href='/ru/electronics/search/']")).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.id("ptxt")));
         driver.findElement(By.xpath("//*[@id='ptxt']")).sendKeys("Лаптоп");
-        driver.findElement(By.xpath("//*[@id='ptxt']")).submit();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='cmp_1']")));
+        driver.findElement(By.xpath("//*[@id='cmp_1']")).click();
 
-        Select dropDownPodrubrika = new Select(driver.findElement(By.name("'sid'")));
-        dropDownPodrubrika.selectByValue("1");
+//        Select dropDownPodrubrika = new Select(driver.findElement(By.name("'sid'")));
+//        dropDownPodrubrika.selectByValue("1");
 
 
     }
