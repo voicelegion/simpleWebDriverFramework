@@ -1,36 +1,43 @@
 package webdriverFramework;
 
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TestRule;
+import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.server.handler.FindElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 
-/**
- * Created by roman.pipchenko on 1/20/2017.
- */
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
+
 public class SSMission {
+    static WebDriver driver;
 
-    public static void main(String[] args) {
+    @Rule
+    public TestRule screenshotTaker = new ScreenshotTaker((TakesScreenshot) driver);
 
+    @BeforeClass
+    public static void setup() {
         File file = new File("C:\\tools\\Firefox\\", "firefox" + ".exe");
         if (file.exists()) {
             System.setProperty("webdriver.firefox.bin", "C:\\tools\\Firefox\\firefox.exe");
         }
-
         System.setProperty("webdriver.gecko.driver", "src\\test\\resources\\geckodriver.exe");
-        WebDriver driver = new FirefoxDriver();
+        driver = new FirefoxDriver();
+    }
 
+    @Test
+    public void testSS() {
 
         driver.get("https://www.ss.lv");
+        assertTrue(driver.findElement(By.xpath("//*[@href='/ru/']")).isDisplayed());
         driver.findElement(By.xpath("//*[@href='/ru/']")).click();
         WebDriverWait wait = new WebDriverWait(driver, 5);
 
@@ -40,7 +47,7 @@ public class SSMission {
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@href='/ru/electronics/search/']")));
         driver.findElement(By.xpath("//*[@href='/ru/electronics/search/']")).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.id("ptxt")));
-        driver.findElement(By.xpath("//*[@id='ptxt']")).sendKeys("Лаптоп");
+        driver.findElement(By.xpath("//*[@id='ptxt']")).sendKeys("Laptop");
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='cmp_1']")));
         driver.findElement(By.xpath("//*[@id='cmp_1']")).click();
 
@@ -52,11 +59,17 @@ public class SSMission {
         dropDownRegion.selectByValue("riga_f");
 
         driver.findElement(By.id("sbtn")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@class=\"a19\"]")));
         driver.findElement(By.xpath("//*[@class=\"a19\"]")).click();
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@class=\"a9a\"][@href=\"/ru/electronics/search/\"]")));
+
+        try {
+            driver.findElement(By.xpath("//*[@class=\"a9a\"][@href=\"/ru/electronics/search/\"]")).click();
+        } catch (StaleElementReferenceException e) {
+            driver.findElement(By.xpath("//*[@class=\"a9a\"][@href=\"/ru/electronics/search/\"]")).click();
+        }
         
-
-
+        assertEquals("https://www.ss.lv/ru/electronics/search/", driver.getCurrentUrl());
     }
-
-
 }
