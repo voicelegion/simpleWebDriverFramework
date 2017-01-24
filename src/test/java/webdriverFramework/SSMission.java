@@ -18,7 +18,7 @@ import java.io.File;
  * Created by roman.pipchenko on 1/20/2017.
  */
 public class SSMission {
-    
+
     public static void main(String[] args) {
 
         File file = new File("C:\\tools\\Firefox\\", "firefox" + ".exe");
@@ -44,8 +44,16 @@ public class SSMission {
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='cmp_1']")));
         driver.findElement(By.xpath("//*[@id='cmp_1']")).click();
 
-//        Select dropDownPodrubrika = new Select(driver.findElement(By.name("'sid'")));
-//        dropDownPodrubrika.selectByValue("1");
+        wait.until(ExpectedConditions.elementToBeClickable(By.name("sid")));
+        Select dropDownPodrubrika = new Select(driver.findElement(By.name("sid")));
+        dropDownPodrubrika.selectByValue("1");
+
+        Select dropDownRegion = new Select(driver.findElement(By.id("s_region_select")));
+        dropDownRegion.selectByValue("riga_f");
+
+        driver.findElement(By.id("sbtn")).click();
+        driver.findElement(By.xpath("//*[@class=\"a19\"]")).click();
+        
 
 
     }
