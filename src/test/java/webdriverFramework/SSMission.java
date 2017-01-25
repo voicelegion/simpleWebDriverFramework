@@ -12,6 +12,10 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.*;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -23,7 +27,7 @@ public class SSMission {
     static WebDriver driver;
 
     //String browser="firefox";
-    public static String browser = "chrome8";
+    public static String browser = "chrome";
 
 
     @Rule
@@ -52,6 +56,7 @@ public class SSMission {
     public void testSS() {
 
         driver.get("https://www.ss.lv");
+        driver.manage().window().maximize();
         assertTrue(driver.findElement(By.xpath("//*[@href='/ru/']")).isDisplayed());
         driver.findElement(By.xpath("//*[@href='/ru/']")).click();
         WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -91,11 +96,42 @@ public class SSMission {
         foo.click();
 
 
-//        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@class=\"a9a\"][@href=\"/ru/electronics/search/\"]")));
-//        driver.findElement(By.xpath("//*[@class=\"a9a\"][@href=\"/ru/electronics/search/\"]")).click();
-
-
         wait.until(ExpectedConditions.urlContains("search/"));
         assertEquals("https://www.ss.lv/ru/electronics/search/", driver.getCurrentUrl());
+
+        driver.findElement(By.xpath("//*[@name=\"topt[8][min]\"]")).sendKeys("0");
+
+        driver.findElement(By.xpath("//*[@name=\"topt[8][max]\"]")).sendKeys("300");
+
+        driver.findElement(By.id("sbtn")).click();
+
+        driver.findElements(By.xpath("//*[contains(@id, 'tr_')]"));
+
+       List<WebElement> elementList = new ArrayList<WebElement>();
+       elementList = driver.findElements(By.xpath("//*[contains(@id, 'tr_')]"));
+
+
+       int advert1 = randInt(0, elementList.size());
+       int advert2 = randInt(0, elementList.size());
+       if (advert2 == advert1){
+           advert2 = randInt(0, elementList.size());
+       }
+       int advert3 = randInt(0, elementList.size());
+       if (advert3 == advert2 || advert3 == advert1){
+           advert3 = randInt(0,elementList.size());
+       }
+
+
+    }
+    public static int randInt(int min, int max) {
+
+
+        Random rand = new Random();
+
+        // nextInt is normally exclusive of the top value,
+        // so add 1 to make it inclusive
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+
+        return randomNum;
     }
 }
