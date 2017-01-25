@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Random;
 
 
-
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -103,35 +102,46 @@ public class SSMission {
 
         driver.findElement(By.xpath("//*[@name=\"topt[8][max]\"]")).sendKeys("300");
 
+        Select sortByPrice = new Select(driver.findElement(By.xpath("//*[@name=\"sort\"]")));
+        sortByPrice.selectByValue("8");
+
         driver.findElement(By.id("sbtn")).click();
 
         driver.findElements(By.xpath("//*[contains(@id, 'tr_')]"));
 
-       List<WebElement> elementList = new ArrayList<WebElement>();
-       elementList = driver.findElements(By.xpath("//*[contains(@id, 'tr_')]"));
+
+        List<WebElement> elementList;
+        elementList = driver.findElements(By.xpath("//*[contains(@id, 'tr_')]"));
+
+        String firstAdv = elementList.get(1).getText();
+        String secondAdvText = elementList.get(6).getText();
+        String thirdAdvText = elementList.get(40).getText();
+
+        elementList.get(1).findElement(By.xpath("//*[contains(@id, 'c')]")).click();
 
 
-       int advert1 = randInt(0, elementList.size());
-       int advert2 = randInt(0, elementList.size());
-       if (advert2 == advert1){
-           advert2 = randInt(0, elementList.size());
-       }
-       int advert3 = randInt(0, elementList.size());
-       if (advert3 == advert2 || advert3 == advert1){
-           advert3 = randInt(0,elementList.size());
-       }
 
-
-    }
-    public static int randInt(int min, int max) {
-
-
-        Random rand = new Random();
-
-        // nextInt is normally exclusive of the top value,
-        // so add 1 to make it inclusive
-        int randomNum = rand.nextInt((max - min) + 1) + min;
-
-        return randomNum;
     }
 }
+//       int advert1 = randInt(0, elementList.size());
+//       int advert2 = randInt(0, elementList.size());
+//       if (advert2 == advert1){
+//           advert2 = randInt(0, elementList.size());
+//       }
+//       int advert3 = randInt(0, elementList.size());
+//       if (advert3 == advert2 || advert3 == advert1){
+//           advert3 = randInt(0,elementList.size());
+//       }
+//
+//
+//    }
+//    public static int randInt(int min, int max) {
+//
+//
+//        Random rand = new Random();
+//
+//        // nextInt is normally exclusive of the top value,
+//        // so add 1 to make it inclusive
+//        int randomNum = rand.nextInt((max - min) + 1) + min;
+//
+//        return randomNum;
