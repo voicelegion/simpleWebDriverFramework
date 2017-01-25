@@ -8,6 +8,8 @@ import org.openqa.selenium.TakesScreenshot;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by roman.pipchenko on 1/24/2017.
@@ -20,7 +22,7 @@ import java.io.IOException;
 
     @Override
     protected void failed(Throwable e, Description description) {
-        File screenshot = new File(description.getClassName() + "-" + description.getMethodName() + ".png");
+        File screenshot = new File("target" + File.separator +  description.getClassName() + "-" + description.getMethodName() + new SimpleDateFormat("ddHHmmss").format(new Date()) + ".png");
 
         try {
             FileUtils.moveFile(takesScreenshot.getScreenshotAs(OutputType.FILE), screenshot);
