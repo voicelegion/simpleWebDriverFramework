@@ -113,15 +113,29 @@ public class SSMission {
         List<WebElement> elementList;
         elementList = driver.findElements(By.xpath("//*[contains(@id, 'tr_')]"));
 
-        String firstAdv = elementList.get(1).getText();
-        String secondAdvText = elementList.get(6).getText();
-        String thirdAdvText = elementList.get(40).getText();
+        WebElement firstAd = elementList.get(1);
+        WebElement secondAd = elementList.get(6);
+        WebElement thirdAd = elementList.get(40);
 
-        elementList.get(1).findElement(By.xpath("//*[contains(@id, 'c')]")).click();
+
+        String firstAdv = firstAd.getText();
+        String secondAdvText = secondAd.getText();
+        String thirdAdvText = thirdAd.getText();
+
+        firstAd.findElement(By.xpath(".//input[@type=\"checkbox\"]")).click();
+        secondAd.findElement(By.xpath(".//input[@type=\"checkbox\"]")).click();
+        thirdAd.findElement(By.xpath(".//input[@type=\"checkbox\"]")).click();
+
+        driver.findElement(By.xpath("//*[@id='show_selected_a']")).click();
+
+        assertEquals(firstAd.getText(),driver.findElement(By.xpath("//*")).getText());
+
+        
 
 
 
     }
+
 }
 //       int advert1 = randInt(0, elementList.size());
 //       int advert2 = randInt(0, elementList.size());
