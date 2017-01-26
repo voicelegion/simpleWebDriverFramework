@@ -23,6 +23,7 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.fail;
 
 public class SSMission {
+
     static WebDriver driver;
 
     //String browser="firefox";
@@ -118,9 +119,9 @@ public class SSMission {
         WebElement thirdAd = elementList.get(40);
 
 
-        String firstAdv = firstAd.getText();
-        String secondAdvText = secondAd.getText();
-        String thirdAdvText = thirdAd.getText();
+        String firstAdvText = firstAd.findElement(By.xpath(".//a[@id and @class]")).getText();
+        String secondAdvText = secondAd.findElement(By.xpath(".//a[@id and @class]")).getText();
+        String thirdAdvText = thirdAd.findElement(By.xpath(".//a[@id and @class]")).getText();
 
         firstAd.findElement(By.xpath(".//input[@type=\"checkbox\"]")).click();
         secondAd.findElement(By.xpath(".//input[@type=\"checkbox\"]")).click();
@@ -128,13 +129,28 @@ public class SSMission {
 
         driver.findElement(By.xpath("//*[@id='show_selected_a']")).click();
 
-        assertEquals(firstAd.getText(),driver.findElement(By.xpath("//*")).getText());
 
-        
+        List<WebElement> elementListOfSelectedItems;
+        elementListOfSelectedItems = driver.findElements(By.xpath("//*[contains(@id, 'tr_')][contains(@style, 'cursor')]"));
+        System.out.println(elementListOfSelectedItems.size());
 
+        System.out.println(elementListOfSelectedItems.get(0).getText());
 
+        String firstNewAdText = elementListOfSelectedItems.get(0).findElement(By.xpath(".//a[@id and @class]")).getText();
+        String secondNewAdText = elementListOfSelectedItems.get(1).findElement(By.xpath(".//a[@id and @class]")).getText();
+        String thirdNewAdText = elementListOfSelectedItems.get(2).findElement(By.xpath(".//a[@id and @class]")).getText();
 
+        assertTrue();
+//        assertEquals(true, elementListOfSelectedItems.contains(firstAd));
+//        assertEquals(true, elementListOfSelectedItems.contains(secondAd));
+//        assertEquals(true, elementListOfSelectedItems.contains(thirdAd));
+//
+//        System.out.println("Everything is okay");
+//
+//        driver.quit();
     }
+
+
 
 }
 //       int advert1 = randInt(0, elementList.size());
