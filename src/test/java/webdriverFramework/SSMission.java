@@ -114,14 +114,35 @@ public class SSMission {
         List<WebElement> elementList;
         elementList = driver.findElements(By.xpath("//*[contains(@id, 'tr_')]"));
 
-        WebElement firstAd = elementList.get(1);
-        WebElement secondAd = elementList.get(6);
-        WebElement thirdAd = elementList.get(40);
+
+
+        int advert1 = randInt(0, elementList.size());
+        int advert2 = randInt(0, elementList.size());
+        while (advert2 == advert1) {
+            advert2 = randInt(0, elementList.size());
+        }
+        int advert3 = randInt(0, elementList.size());
+        while (advert3 == advert2 || advert3 == advert1) {
+            advert3 = randInt(0, elementList.size());
+        }
+        int firstSelectedElement = advert1;
+        int secondSelectedElement = advert2;
+        int thirdSelectedElement = advert3;
+
+
+        WebElement firstAd = elementList.get(firstSelectedElement);
+        WebElement secondAd = elementList.get(secondSelectedElement);
+        WebElement thirdAd = elementList.get(thirdSelectedElement);
 
 
         String firstAdvText = firstAd.findElement(By.xpath(".//a[@id and @class]")).getText();
         String secondAdvText = secondAd.findElement(By.xpath(".//a[@id and @class]")).getText();
         String thirdAdvText = thirdAd.findElement(By.xpath(".//a[@id and @class]")).getText();
+
+        List<String> selectedElementsText = new ArrayList<String>();
+        selectedElementsText.add(firstAdvText);
+        selectedElementsText.add(secondAdvText);
+        selectedElementsText.add(thirdAdvText);
 
         firstAd.findElement(By.xpath(".//input[@type=\"checkbox\"]")).click();
         secondAd.findElement(By.xpath(".//input[@type=\"checkbox\"]")).click();
@@ -132,46 +153,28 @@ public class SSMission {
 
         List<WebElement> elementListOfSelectedItems;
         elementListOfSelectedItems = driver.findElements(By.xpath("//*[contains(@id, 'tr_')][contains(@style, 'cursor')]"));
-        System.out.println(elementListOfSelectedItems.size());
-
-        System.out.println(elementListOfSelectedItems.get(0).getText());
 
         String firstNewAdText = elementListOfSelectedItems.get(0).findElement(By.xpath(".//a[@id and @class]")).getText();
         String secondNewAdText = elementListOfSelectedItems.get(1).findElement(By.xpath(".//a[@id and @class]")).getText();
         String thirdNewAdText = elementListOfSelectedItems.get(2).findElement(By.xpath(".//a[@id and @class]")).getText();
 
-        assertTrue();
-//        assertEquals(true, elementListOfSelectedItems.contains(firstAd));
-//        assertEquals(true, elementListOfSelectedItems.contains(secondAd));
-//        assertEquals(true, elementListOfSelectedItems.contains(thirdAd));
-//
-//        System.out.println("Everything is okay");
-//
-//        driver.quit();
+
+        int selectedElementAmount = selectedElementsText.size();
+        for (int i = 0; i < selectedElementAmount; i++) {
+            assertTrue(selectedElementsText.get(i).contains(firstNewAdText) || selectedElementsText.get(i).contains(secondNewAdText) || selectedElementsText.get(i).contains(thirdNewAdText));
+        }
     }
 
 
+    public static int randInt(int min, int max) {
+
+
+        Random rand = new Random();
+
+        // nextInt is normally exclusive of the top value,
+        // so add 1 to make it inclusive
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+        return randomNum;
+    }
 
 }
-//       int advert1 = randInt(0, elementList.size());
-//       int advert2 = randInt(0, elementList.size());
-//       if (advert2 == advert1){
-//           advert2 = randInt(0, elementList.size());
-//       }
-//       int advert3 = randInt(0, elementList.size());
-//       if (advert3 == advert2 || advert3 == advert1){
-//           advert3 = randInt(0,elementList.size());
-//       }
-//
-//
-//    }
-//    public static int randInt(int min, int max) {
-//
-//
-//        Random rand = new Random();
-//
-//        // nextInt is normally exclusive of the top value,
-//        // so add 1 to make it inclusive
-//        int randomNum = rand.nextInt((max - min) + 1) + min;
-//
-//        return randomNum;
