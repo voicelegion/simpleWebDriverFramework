@@ -25,8 +25,7 @@ import static org.junit.Assert.fail;
 public class SSMission {
 
     static WebDriver driver;
-
-    //String browser="firefox";
+    
     public static String browser = "chrome";
 
 
@@ -53,7 +52,7 @@ public class SSMission {
     }
 
     @Test
-    public void testSS() {
+    public void testSS() throws InterruptedException {
 
         driver.get("https://www.ss.lv");
         driver.manage().window().maximize();
@@ -68,6 +67,7 @@ public class SSMission {
         driver.findElement(By.xpath("//*[@href='/ru/electronics/search/']")).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.id("ptxt")));
         driver.findElement(By.xpath("//*[@id='ptxt']")).sendKeys("Laptop");
+        Thread.sleep(1000);
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='cmp_1']")));
         driver.findElement(By.xpath("//*[@id='cmp_1']")).click();
 
@@ -116,23 +116,19 @@ public class SSMission {
 
 
 
-        int advert1 = randInt(0, elementList.size());
-        int advert2 = randInt(0, elementList.size());
-        while (advert2 == advert1) {
-            advert2 = randInt(0, elementList.size());
+        int firstSelectedAd = randInt(elementList.size());
+        int secondSelectedAd = randInt(elementList.size());
+        while (secondSelectedAd == firstSelectedAd) {
+            secondSelectedAd = randInt(elementList.size());
         }
-        int advert3 = randInt(0, elementList.size());
-        while (advert3 == advert2 || advert3 == advert1) {
-            advert3 = randInt(0, elementList.size());
+        int thirdSelectedAd = randInt(elementList.size());
+        while (thirdSelectedAd == secondSelectedAd || thirdSelectedAd == firstSelectedAd) {
+            thirdSelectedAd = randInt(elementList.size());
         }
-        int firstSelectedElement = advert1;
-        int secondSelectedElement = advert2;
-        int thirdSelectedElement = advert3;
 
-
-        WebElement firstAd = elementList.get(firstSelectedElement);
-        WebElement secondAd = elementList.get(secondSelectedElement);
-        WebElement thirdAd = elementList.get(thirdSelectedElement);
+        WebElement firstAd = elementList.get(firstSelectedAd);
+        WebElement secondAd = elementList.get(secondSelectedAd);
+        WebElement thirdAd = elementList.get(thirdSelectedAd);
 
 
         String firstAdvText = firstAd.findElement(By.xpath(".//a[@id and @class]")).getText();
@@ -166,14 +162,10 @@ public class SSMission {
     }
 
 
-    public static int randInt(int min, int max) {
-
+    public static int randInt(int max) {
 
         Random rand = new Random();
-
-        // nextInt is normally exclusive of the top value,
-        // so add 1 to make it inclusive
-        int randomNum = rand.nextInt((max - min) + 1) + min;
+        int randomNum = rand.nextInt(max);
         return randomNum;
     }
 
