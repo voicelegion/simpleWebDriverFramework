@@ -10,13 +10,13 @@ import org.openqa.selenium.support.ui.Select;
  */
 public class SearchElectronicsPage extends SearchPage{
     private WebDriver driver;
-    private WebElement priceMinTextBox = driver.findElement(By.xpath("//*[@name=\"topt[8][min]\"]"));
-    private WebElement priceMaxTextBox = driver.findElement(By.xpath("//*[@name=\"topt[8][max]\"]"));
-    private Select dealTypeDropdown = new Select(driver.findElement(By.name("sid")));
-    private Select regionDropdown = new Select(driver.findElement(By.id("s_region_select")));
-    private Select sortByDropdown = new Select(driver.findElement(By.name("sort")));
-    private WebElement searchSubmitButton = driver.findElement(By.id("sbtn"));
-    
+    public WebElement priceMinTextBox = driver.findElement(By.xpath("//*[@name=\"topt[8][min]\"]"));
+    public WebElement priceMaxTextBox = driver.findElement(By.xpath("//*[@name=\"topt[8][max]\"]"));
+    public Select dealTypeDropdown = new Select(driver.findElement(By.name("sid")));
+    public Select regionDropdown = new Select(driver.findElement(By.id("s_region_select")));
+    public Select sortByDropdown = new Select(driver.findElement(By.name("sort")));
+    public WebElement searchSubmitButton = driver.findElement(By.id("sbtn"));
+
 
     public SearchElectronicsPage(WebDriver driver) {
         super(driver);

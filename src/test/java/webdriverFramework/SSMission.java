@@ -55,15 +55,17 @@ public class SSMission {
     @Test
     public void testSS() throws InterruptedException {
 
-        driver.get("https://www.ss.lv");
+        driver.get("https://www.ss.lv/lv");
         driver.manage().window().maximize();
-        assertTrue(driver.findElement(By.xpath("//*[@href='/ru/']")).isDisplayed());
-        driver.findElement(By.xpath("//*[@href='/ru/']")).click();
+        HomePage homePage = new HomePage(driver);
+        assertTrue(homePage.switchLangToRuLink.isDisplayed());
+//                driver.findElement(By.xpath("//*[@href='/ru/']")).isDisplayed());
+        homePage.switchLangToRuLink.click();
         WebDriverWait wait = new WebDriverWait(driver, 5);
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@class=\"a1\"][@href=\"/ru/electronics/\"]")));
+        wait.until(ExpectedConditions.elementToBeClickable(homePage.GoToElectronicsLink));
 
-        driver.findElement(By.xpath("//*[@class=\"a1\"][@href=\"/ru/electronics/\"]")).click();
+        homePage.GoToElectronicsLink.click();
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@href='/ru/electronics/search/']")));
         driver.findElement(By.xpath("//*[@href='/ru/electronics/search/']")).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.id("ptxt")));
@@ -139,7 +141,7 @@ public class SSMission {
         String secondAdvText = secondAd.findElement(By.xpath(".//a[@id and @class]")).getText();
         String thirdAdvText = thirdAd.findElement(By.xpath(".//a[@id and @class]")).getText();
 
-        List<String> selectedElementsText = new ArrayList<String>();
+        List<String> selectedElementsText = new ArrayList<>();
         selectedElementsText.add(firstAdvText);
         selectedElementsText.add(secondAdvText);
         selectedElementsText.add(thirdAdvText);
@@ -163,6 +165,7 @@ public class SSMission {
         for (int i = 0; i < selectedElementAmount; i++) {
             assertTrue(selectedElementsText.get(i).contains(firstNewAdText) || selectedElementsText.get(i).contains(secondNewAdText) || selectedElementsText.get(i).contains(thirdNewAdText));
         }
+
     }
 
 

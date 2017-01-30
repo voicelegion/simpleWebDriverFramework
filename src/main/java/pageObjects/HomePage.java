@@ -10,9 +10,9 @@ import org.openqa.selenium.WebElement;
 public class HomePage {
     private WebDriver driver;
 
-//    private WebElement switchLangToRuLink = driver.findElement(By.xpath("//*[@href='/ru/']"));
-    private WebElement switchLangToLvLink = driver.findElement(By.xpath("//*[@href='/lv/']"));
-    private WebElement GoToElectronicsLink = driver.findElement(By.xpath("//*[@class=\"a1\"][@href=\"/ru/electronics/\"]"));
+    public WebElement switchLangToRuLink = driver.findElement(By.xpath("//*[@href='/ru/']"));
+    public WebElement switchLangToLvLink = driver.findElement(By.xpath("//*[@href='/lv/']"));
+    public WebElement GoToElectronicsLink = driver.findElement(By.xpath("//*[@class=\"a1\"][@href=\"/ru/electronics/\"]"));
 
 
     public HomePage(WebDriver driver) {

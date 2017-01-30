@@ -11,8 +11,8 @@ import java.util.List;
  */
 public class ElectronicsShowSelectedPage {
     private WebDriver driver;
-    private List<WebElement> selectedAds = driver.findElements(By.xpath("//*[contains(@id, 'tr_')][contains(@style, 'cursor')]"));
-    private String selectedAdvText = driver.findElement(By.xpath(".//a[@id and @class]")).getText();
+    public List<WebElement> selectedAds = driver.findElements(By.xpath("//*[contains(@id, 'tr_')][contains(@style, 'cursor')]"));
+    public String selectedAdvText = driver.findElement(By.xpath(".//a[@id and @class]")).getText();
 
 
     public ElectronicsShowSelectedPage(WebDriver driver){

@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
  */
 public class Electronics {
     private WebDriver driver;
-    private WebElement searchElectronicsLink = driver.findElement(By.xpath("//*[@href='/ru/electronics/search/']"));
+    public WebElement searchElectronicsLink = driver.findElement(By.xpath("//*[@href='/ru/electronics/search/']"));
 
     public Electronics(WebDriver driver){
         this.driver = driver;
