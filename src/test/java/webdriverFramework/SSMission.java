@@ -10,6 +10,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.*;
+import pageObjects.HomePage;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import static org.junit.Assert.fail;
 public class SSMission {
 
     static WebDriver driver;
-    
+
     public static String browser = "chrome";
 
 
@@ -66,6 +67,9 @@ public class SSMission {
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@href='/ru/electronics/search/']")));
         driver.findElement(By.xpath("//*[@href='/ru/electronics/search/']")).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.id("ptxt")));
+
+
+
         driver.findElement(By.xpath("//*[@id='ptxt']")).sendKeys("Laptop");
         Thread.sleep(1000);
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='cmp_1']")));
