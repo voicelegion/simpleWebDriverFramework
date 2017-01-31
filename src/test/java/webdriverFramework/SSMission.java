@@ -24,6 +24,7 @@ import java.util.Random;
 
 
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static junit.framework.Assert.fail;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
@@ -85,14 +86,14 @@ public class SSMission {
         wait.until(ExpectedConditions.elementToBeClickable(searchElectronicsPage.searchFirstSuggestion));
         searchElectronicsPage.searchFirstSuggestion.click();
 
-        wait.until(ExpectedConditions.elementToBeClickable((WebElement) searchElectronicsPage.dealTypeDropdown));
+        wait.until(ExpectedConditions.elementToBeClickable(searchElectronicsPage.dealTypeDropdown));
         searchElectronicsPage.selectDealType(ValueForDealTypeDropdown.SELL);
 
 
         searchElectronicsPage.selectRegionByValue("riga_f");
 
         searchElectronicsPage.searchSubmitButton.click();
-
+        fail();
         ElectronicsSearchResultPage electronicsSearchResultPage = new ElectronicsSearchResultPage(driver);
         wait.until(ExpectedConditions.elementToBeClickable(electronicsSearchResultPage.sortByPriceLink));
         electronicsSearchResultPage.sortByPriceLink.click();
