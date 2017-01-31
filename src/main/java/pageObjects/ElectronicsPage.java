@@ -7,11 +7,11 @@ import org.openqa.selenium.WebElement;
 /**
  * Created by roman.pipchenko on 1/30/2017.
  */
-public class Electronics {
+public class ElectronicsPage {
     private WebDriver driver;
     public WebElement searchElectronicsLink = driver.findElement(By.xpath("//*[@href='/ru/electronics/search/']"));
 
-    public Electronics(WebDriver driver){
+    public ElectronicsPage(WebDriver driver){
         this.driver = driver;
     }
 }

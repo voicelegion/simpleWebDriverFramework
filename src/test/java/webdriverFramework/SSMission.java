@@ -1,7 +1,9 @@
 package webdriverFramework;
 
 
+import enums.Language;
 import com.google.common.base.Function;
+import enums.ValueForDealTypeDropdown;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,7 +12,10 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.*;
+import pageObjects.ElectronicsPage;
+import pageObjects.ElectronicsSearchResultPage;
 import pageObjects.HomePage;
+import pageObjects.SearchElectronicsPage;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,7 +26,7 @@ import java.util.Random;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.fail;
+
 
 public class SSMission {
 
@@ -58,35 +63,39 @@ public class SSMission {
         driver.get("https://www.ss.lv/lv");
         driver.manage().window().maximize();
         HomePage homePage = new HomePage(driver);
+        ElectronicsPage electronicsPage = new ElectronicsPage(driver);
         assertTrue(homePage.switchLangToRuLink.isDisplayed());
-//                driver.findElement(By.xpath("//*[@href='/ru/']")).isDisplayed());
-        homePage.switchLangToRuLink.click();
+        homePage.switchLangTo(Language.RU);
         WebDriverWait wait = new WebDriverWait(driver, 5);
 
-        wait.until(ExpectedConditions.elementToBeClickable(homePage.GoToElectronicsLink));
+        wait.until(ExpectedConditions.elementToBeClickable(homePage.goToElectronicsLink));
 
-        homePage.GoToElectronicsLink.click();
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@href='/ru/electronics/search/']")));
-        driver.findElement(By.xpath("//*[@href='/ru/electronics/search/']")).click();
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("ptxt")));
+        homePage.goToElectronicsLink.click();
 
+        wait.until(ExpectedConditions.elementToBeClickable(electronicsPage.searchElectronicsLink));
 
+        electronicsPage.searchElectronicsLink.click();
 
-        driver.findElement(By.xpath("//*[@id='ptxt']")).sendKeys("Laptop");
+        SearchElectronicsPage searchElectronicsPage = new SearchElectronicsPage(driver);
+
+        wait.until(ExpectedConditions.elementToBeClickable(searchElectronicsPage.searchTextBox));
+
+        searchElectronicsPage.searchTextBox.sendKeys("Laptop");
         Thread.sleep(1000);
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='cmp_1']")));
-        driver.findElement(By.xpath("//*[@id='cmp_1']")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(searchElectronicsPage.searchFirstSuggestion));
+        searchElectronicsPage.searchFirstSuggestion.click();
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.name("sid")));
-        Select dropDownPodrubrika = new Select(driver.findElement(By.name("sid")));
-        dropDownPodrubrika.selectByValue("1");
+        wait.until(ExpectedConditions.elementToBeClickable((WebElement) searchElectronicsPage.dealTypeDropdown));
+        searchElectronicsPage.selectDealType(ValueForDealTypeDropdown.SELL);
 
-        Select dropDownRegion = new Select(driver.findElement(By.id("s_region_select")));
-        dropDownRegion.selectByValue("riga_f");
 
-        driver.findElement(By.id("sbtn")).click();
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[text()=\"Цена\"][ancestor::*[@id=\"head_line\"]]")));
-        driver.findElement(By.xpath("//*[text()=\"Цена\"][ancestor::*[@id=\"head_line\"]]")).click();
+        searchElectronicsPage.selectRegionByValue("riga_f");
+
+        searchElectronicsPage.searchSubmitButton.click();
+
+        ElectronicsSearchResultPage electronicsSearchResultPage = new ElectronicsSearchResultPage(driver);
+        wait.until(ExpectedConditions.elementToBeClickable(electronicsSearchResultPage.sortByPriceLink));
+        electronicsSearchResultPage.sortByPriceLink.click();
 
         Wait<WebDriver> stubbornWait = new FluentWait<WebDriver>(driver)
                 .withTimeout(30, SECONDS)
@@ -119,7 +128,6 @@ public class SSMission {
 
         List<WebElement> elementList;
         elementList = driver.findElements(By.xpath("//*[contains(@id, 'tr_')]"));
-
 
 
         int firstSelectedAd = randInt(elementList.size());
