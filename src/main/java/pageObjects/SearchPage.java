@@ -3,6 +3,8 @@ package pageObjects;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
@@ -12,14 +14,24 @@ import java.util.List;
  */
 public class SearchPage {
     private WebDriver driver;
-    public WebElement searchTextBox = driver.findElement(By.id("ptxt"));
-    public Select searchPeriodDropdown = new Select(driver.findElement(By.name("pr]")));
-    public WebElement searchButton = driver.findElement(By.id("sbtn"));
-    public List<WebElement> searchSuggestionList = driver.findElements(By.xpath("//*[@id='cmp_1']"));
+    @FindBy(id = "ptxt")
+    public WebElement searchTextBox;
+    @FindBy(name = "pr")
+    public WebElement searchPeriodDropdown;
+    @FindBy(id = "sbtn")
+    public WebElement searchStartButton;
+    @FindBy (xpath = "//*[@id='cmp_1']")
+    public List<WebElement> searchSuggestionList;
+    
     public WebElement searchFirstSuggestion = searchSuggestionList.get(0);
 
     public SearchPage(WebDriver driver){
         this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+    public void selectSearchPeriod(int value) {
+        Select dropDown = new Select(searchPeriodDropdown);
+        dropDown.selectByValue(String.valueOf(value));
     }
 
 }
