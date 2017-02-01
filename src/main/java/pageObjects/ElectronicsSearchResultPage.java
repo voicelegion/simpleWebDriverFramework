@@ -1,8 +1,9 @@
 package pageObjects;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
 
@@ -11,17 +12,35 @@ import java.util.List;
  */
 public class ElectronicsSearchResultPage {
     private WebDriver driver;
-    public WebElement sortByPriceLink = driver.findElement(By.xpath("//*[text()=\"Цена\"][ancestor::*[@id=\"head_line\"]]"));
-    public WebElement expandedSearchLink = driver.findElement(By.xpath("//*[@href='/ru/electronics/search/' and contains(text(), 'Расширенный поиск')]"));
-    public WebElement showSelectedAdsButton = driver.findElement(By.id("show_selected_a"));
-    public List<WebElement> allAdvList = driver.findElements(By.xpath("//*[contains(@id, 'tr_')]"));
-    public WebElement adsCheckbox = driver.findElement(By.xpath(".//input[@type='checkbox']"));
-    public String adsText = driver.findElement(By.xpath(".//a[@id and @class]")).getText();
+    @FindBy(xpath = "//*[text()=\"Цена\"][ancestor::*[@id=\"head_line\"]]")
+    public WebElement sortByPriceLink;
+
+    @FindBy(xpath = "//*[@href='/ru/electronics/search/' and contains(text(), 'Расширенный поиск')]")
+    public WebElement expandedSearchLink;
+
+    @FindBy(id ="show_selected_a" )
+    public WebElement showSelectedAdsButton;
+
+    @FindBy(xpath = "//*[contains(@id, 'tr_')]")
+    public List<WebElement> allAdvList;
+
+    @FindBy(xpath = ".//input[@type='checkbox']")
+    public WebElement adsCheckbox;
+
+    @FindBy(xpath = ".//a[@id and @class]")
+    public WebElement adsText;
+
+
+
+    public String getAdsText(){
+        return adsText.getText();
+    }
 
 
 
     public ElectronicsSearchResultPage(WebDriver driver){
         this.driver = driver;
+        PageFactory.initElements(driver,this);
     }
 
 }
