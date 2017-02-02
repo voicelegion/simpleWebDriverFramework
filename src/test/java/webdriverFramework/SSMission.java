@@ -12,10 +12,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.*;
-import pageObjects.ElectronicsPage;
-import pageObjects.ElectronicsSearchResultPage;
-import pageObjects.HomePage;
-import pageObjects.SearchElectronicsPage;
+import pageObjects.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -63,10 +60,17 @@ public class SSMission {
 
         driver.get("https://www.ss.lv/lv");
         driver.manage().window().maximize();
+
         HomePage homePage = new HomePage(driver);
+
         ElectronicsPage electronicsPage = new ElectronicsPage(driver);
+
+
+
         assertTrue(homePage.switchLangToRuLink.isDisplayed());
+
         homePage.switchLangTo(Language.RU);
+
         WebDriverWait wait = new WebDriverWait(driver, 5);
 
         wait.until(ExpectedConditions.elementToBeClickable(homePage.goToElectronicsLink));
@@ -83,8 +87,8 @@ public class SSMission {
 
         searchElectronicsPage.searchTextBox.sendKeys("Laptop");
         Thread.sleep(1000);
-        wait.until(ExpectedConditions.elementToBeClickable(searchElectronicsPage.searchFirstSuggestion));
-        searchElectronicsPage.searchFirstSuggestion.click();
+        wait.until(ExpectedConditions.elementToBeClickable(searchElectronicsPage.getSearchFirstSuggestion()));
+        searchElectronicsPage.getSearchFirstSuggestion().click();
 
         wait.until(ExpectedConditions.elementToBeClickable(searchElectronicsPage.dealTypeDropdown));
         searchElectronicsPage.selectDealType(ValueForDealTypeDropdown.SELL);
@@ -92,8 +96,8 @@ public class SSMission {
 
         searchElectronicsPage.selectRegionByValue("riga_f");
 
-        searchElectronicsPage.searchSubmitButton.click();
-        fail();
+        searchElectronicsPage.searchStartButton.click();
+
         ElectronicsSearchResultPage electronicsSearchResultPage = new ElectronicsSearchResultPage(driver);
         wait.until(ExpectedConditions.elementToBeClickable(electronicsSearchResultPage.sortByPriceLink));
         electronicsSearchResultPage.sortByPriceLink.click();
@@ -106,7 +110,7 @@ public class SSMission {
 
         WebElement foo = stubbornWait.until(new Function<WebDriver, WebElement>() {
             public WebElement apply(WebDriver driver) {
-                return driver.findElement(By.xpath("//*[@class=\"a9a\"][@href=\"/ru/electronics/search/\"]"));
+                return electronicsSearchResultPage.expandedSearchLink;
             }
         });
         foo.click();
@@ -115,59 +119,56 @@ public class SSMission {
         wait.until(ExpectedConditions.urlContains("search/"));
         assertEquals("https://www.ss.lv/ru/electronics/search/", driver.getCurrentUrl());
 
-        driver.findElement(By.xpath("//*[@name=\"topt[8][min]\"]")).sendKeys("0");
+        searchElectronicsPage.priceMinTextBox.sendKeys("0");
 
-        driver.findElement(By.xpath("//*[@name=\"topt[8][max]\"]")).sendKeys("300");
+        searchElectronicsPage.priceMaxTextBox.sendKeys("300");
 
-        Select sortByPrice = new Select(driver.findElement(By.xpath("//*[@name=\"sort\"]")));
-        sortByPrice.selectByValue("8");
+        searchElectronicsPage.selectSortingBy("8");
 
-        driver.findElement(By.id("sbtn")).click();
-
-        driver.findElements(By.xpath("//*[contains(@id, 'tr_')]"));
+        searchElectronicsPage.searchStartButton.click();
 
 
-        List<WebElement> elementList;
-        elementList = driver.findElements(By.xpath("//*[contains(@id, 'tr_')]"));
+
+//        List<WebElement> elementList;
+//        elementList = driver.findElements(By.xpath("//*[contains(@id, 'tr_')]"));
 
 
-        int firstSelectedAd = randInt(elementList.size());
-        int secondSelectedAd = randInt(elementList.size());
+        int firstSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
+        int secondSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
         while (secondSelectedAd == firstSelectedAd) {
-            secondSelectedAd = randInt(elementList.size());
+            secondSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
         }
-        int thirdSelectedAd = randInt(elementList.size());
+        int thirdSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
         while (thirdSelectedAd == secondSelectedAd || thirdSelectedAd == firstSelectedAd) {
-            thirdSelectedAd = randInt(elementList.size());
+            thirdSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
         }
 
-        WebElement firstAd = elementList.get(firstSelectedAd);
-        WebElement secondAd = elementList.get(secondSelectedAd);
-        WebElement thirdAd = elementList.get(thirdSelectedAd);
+
+        WebElement firstAd = electronicsSearchResultPage.allAdvList.get(firstSelectedAd);
+        WebElement secondAd = electronicsSearchResultPage.allAdvList.get(secondSelectedAd);
+        WebElement thirdAd = electronicsSearchResultPage.allAdvList.get(thirdSelectedAd);
 
 
-        String firstAdvText = firstAd.findElement(By.xpath(".//a[@id and @class]")).getText();
-        String secondAdvText = secondAd.findElement(By.xpath(".//a[@id and @class]")).getText();
-        String thirdAdvText = thirdAd.findElement(By.xpath(".//a[@id and @class]")).getText();
+        String firstAdvText = electronicsSearchResultPage.getAdsText(firstAd);
+        String secondAdvText = electronicsSearchResultPage.getAdsText(secondAd);
+        String thirdAdvText = electronicsSearchResultPage.getAdsText(thirdAd);
 
         List<String> selectedElementsText = new ArrayList<>();
         selectedElementsText.add(firstAdvText);
         selectedElementsText.add(secondAdvText);
         selectedElementsText.add(thirdAdvText);
 
-        firstAd.findElement(By.xpath(".//input[@type=\"checkbox\"]")).click();
-        secondAd.findElement(By.xpath(".//input[@type=\"checkbox\"]")).click();
-        thirdAd.findElement(By.xpath(".//input[@type=\"checkbox\"]")).click();
+        electronicsSearchResultPage.selectAdsCheckbox(firstAd);
+        electronicsSearchResultPage.selectAdsCheckbox(secondAd);
+        electronicsSearchResultPage.selectAdsCheckbox(thirdAd);
 
-        driver.findElement(By.xpath("//*[@id='show_selected_a']")).click();
+        electronicsSearchResultPage.showSelectedAdsButton.click();
 
+        ElectronicsShowSelectedPage electronicsShowSelectedPage = new ElectronicsShowSelectedPage(driver);
 
-        List<WebElement> elementListOfSelectedItems;
-        elementListOfSelectedItems = driver.findElements(By.xpath("//*[contains(@id, 'tr_')][contains(@style, 'cursor')]"));
-
-        String firstNewAdText = elementListOfSelectedItems.get(0).findElement(By.xpath(".//a[@id and @class]")).getText();
-        String secondNewAdText = elementListOfSelectedItems.get(1).findElement(By.xpath(".//a[@id and @class]")).getText();
-        String thirdNewAdText = elementListOfSelectedItems.get(2).findElement(By.xpath(".//a[@id and @class]")).getText();
+        String firstNewAdText = electronicsShowSelectedPage.getSelectedAdvText(electronicsShowSelectedPage.selectedAds.get(0));
+        String secondNewAdText = electronicsShowSelectedPage.getSelectedAdvText(electronicsShowSelectedPage.selectedAds.get(1));
+        String thirdNewAdText = electronicsShowSelectedPage.getSelectedAdvText(electronicsShowSelectedPage.selectedAds.get(2));
 
 
         int selectedElementAmount = selectedElementsText.size();
