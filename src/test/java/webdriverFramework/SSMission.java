@@ -9,15 +9,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.openqa.selenium.*;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.*;
 import pageObjects.*;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -153,10 +152,10 @@ public class SSMission {
         String secondAdvText = electronicsSearchResultPage.getAdsText(secondAd);
         String thirdAdvText = electronicsSearchResultPage.getAdsText(thirdAd);
 
-        List<String> selectedElementsText = new ArrayList<>();
-        selectedElementsText.add(firstAdvText);
-        selectedElementsText.add(secondAdvText);
-        selectedElementsText.add(thirdAdvText);
+        List<String> textsOfSelectedAds = new ArrayList<>();
+        textsOfSelectedAds.add(firstAdvText);
+        textsOfSelectedAds.add(secondAdvText);
+        textsOfSelectedAds.add(thirdAdvText);
 
         electronicsSearchResultPage.selectAdsCheckbox(firstAd);
         electronicsSearchResultPage.selectAdsCheckbox(secondAd);
@@ -166,14 +165,16 @@ public class SSMission {
 
         ElectronicsShowSelectedPage electronicsShowSelectedPage = new ElectronicsShowSelectedPage(driver);
 
-        String firstNewAdText = electronicsShowSelectedPage.getSelectedAdvText(electronicsShowSelectedPage.selectedAds.get(0));
-        String secondNewAdText = electronicsShowSelectedPage.getSelectedAdvText(electronicsShowSelectedPage.selectedAds.get(1));
-        String thirdNewAdText = electronicsShowSelectedPage.getSelectedAdvText(electronicsShowSelectedPage.selectedAds.get(2));
+        List<String> textsOfSelectedFilteredAds = new ArrayList<>();
+        textsOfSelectedFilteredAds.add(electronicsShowSelectedPage.getSelectedAdvText(electronicsShowSelectedPage.selectedAds.get(0)));
+        textsOfSelectedFilteredAds.add(electronicsShowSelectedPage.getSelectedAdvText(electronicsShowSelectedPage.selectedAds.get(1)));
+        textsOfSelectedFilteredAds.add(electronicsShowSelectedPage.getSelectedAdvText(electronicsShowSelectedPage.selectedAds.get(2)));
+        
+        Collections.sort(textsOfSelectedFilteredAds);
+        Collections.sort(textsOfSelectedAds);
 
-
-        int selectedElementAmount = selectedElementsText.size();
-        for (int i = 0; i < selectedElementAmount; i++) {
-            assertTrue(selectedElementsText.get(i).contains(firstNewAdText) || selectedElementsText.get(i).contains(secondNewAdText) || selectedElementsText.get(i).contains(thirdNewAdText));
+        for (int i = 0; i < textsOfSelectedAds.size(); i++) {
+           assertTrue(textsOfSelectedAds.get(i).contains(textsOfSelectedFilteredAds.get(i)));
         }
 
     }
