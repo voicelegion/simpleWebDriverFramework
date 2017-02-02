@@ -127,11 +127,6 @@ public class SSMission {
         searchElectronicsPage.searchStartButton.click();
 
 
-
-//        List<WebElement> elementList;
-//        elementList = driver.findElements(By.xpath("//*[contains(@id, 'tr_')]"));
-
-
         int firstSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
         int secondSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
         while (secondSelectedAd == firstSelectedAd) {
@@ -169,7 +164,7 @@ public class SSMission {
         textsOfSelectedFilteredAds.add(electronicsShowSelectedPage.getSelectedAdvText(electronicsShowSelectedPage.selectedAds.get(0)));
         textsOfSelectedFilteredAds.add(electronicsShowSelectedPage.getSelectedAdvText(electronicsShowSelectedPage.selectedAds.get(1)));
         textsOfSelectedFilteredAds.add(electronicsShowSelectedPage.getSelectedAdvText(electronicsShowSelectedPage.selectedAds.get(2)));
-        
+
         Collections.sort(textsOfSelectedFilteredAds);
         Collections.sort(textsOfSelectedAds);
 
