@@ -150,16 +150,18 @@ public class SSMission {
         String secondAdvText = electronicsSearchResultPage.getAdsText(secondAd);
         String thirdAdvText = electronicsSearchResultPage.getAdsText(thirdAd);
 
-        Roma thinks this is not necessary anymore. 02/03/16 16:00.
+        Roma thinks this is not necessary anymore. 02/03/17 16:00.
        */
+
+/*      Roma thinks this is not needed and can be replaced after, 02.03.2017 18:20
 
         List<String> textsOfSelectedAds = new ArrayList<>();
         textsOfSelectedAds.add(electronicsSearchResultPage.getAdAndItsText(selectedAdNumbers[0]));
         textsOfSelectedAds.add(electronicsSearchResultPage.getAdAndItsText(selectedAdNumbers[1]));
         textsOfSelectedAds.add(electronicsSearchResultPage.getAdAndItsText(selectedAdNumbers[2]));
 
-
-
+*/
+        electronicsSearchResultPage.createSelectedAdTextList(selectedAdNumbers); // replaces 4lines above
 
 
 
