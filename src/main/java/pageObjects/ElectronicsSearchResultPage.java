@@ -7,6 +7,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 /**
  * Created by roman.pipchenko on 1/30/2017.
@@ -35,10 +37,14 @@ public class ElectronicsSearchResultPage {
 
 
 
-    public String getAdsText(WebElement element){
-        return element.findElement(By.xpath(".//a[@id and @class]")).getText();
-    }
+//    public String getAdsText(WebElement element){
+//        return element.findElement(By.xpath(".//a[@id and @class]")).getText();
+//    }
 
+    public String getAdAndItsText(int index){
+        WebElement element = allAdvList.get(index);
+        return element.findElement(By.xpath(PATHTOADSTEXT)).getText();
+    }
 
 
     public ElectronicsSearchResultPage(WebDriver driver){
@@ -48,4 +54,27 @@ public class ElectronicsSearchResultPage {
     public void selectAdsCheckbox(WebElement webElement){
         webElement.findElement(By.xpath(".//input[@type='checkbox']")).click();
     }
+
+    private int getRandInt(int max, int arrayOfRandomNumbers[]) {
+        Random rand = new Random();
+        int randomNum = rand.nextInt(max);
+        if (IntStream.of(arrayOfRandomNumbers).anyMatch(x -> x == randomNum)){
+           return getRandInt(max, arrayOfRandomNumbers);
+        }
+        return randomNum;
+
+    }
+
+
+    public int[] getRandomNumberArray(int elementAmount){
+        int[] randomAdsNumbers = new int[elementAmount];
+        for (int i = 0; i < elementAmount; i++) {
+            randomAdsNumbers[i] = getRandInt(allAdvList.size(), randomAdsNumbers);
+        }
+        return randomAdsNumbers;
+    }
+
+
+
+
 }

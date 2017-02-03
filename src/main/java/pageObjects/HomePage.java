@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import static junit.framework.TestCase.assertTrue;
+
 /**
  * Created by roman.pipchenko on 1/27/2017.
  */

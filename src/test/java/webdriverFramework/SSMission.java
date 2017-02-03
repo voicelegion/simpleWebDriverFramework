@@ -20,7 +20,6 @@ import java.util.*;
 
 
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static junit.framework.Assert.fail;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
@@ -56,7 +55,7 @@ public class SSMission {
 
     @Test
     public void testSS() throws InterruptedException {
-
+        WebDriverWait wait = new WebDriverWait(driver, 5);
         driver.get("https://www.ss.lv/lv");
         driver.manage().window().maximize();
 
@@ -64,13 +63,7 @@ public class SSMission {
 
         ElectronicsPage electronicsPage = new ElectronicsPage(driver);
 
-
-
-        assertTrue(homePage.switchLangToRuLink.isDisplayed());
-
         homePage.switchLangTo(Language.RU);
-
-        WebDriverWait wait = new WebDriverWait(driver, 5);
 
         wait.until(ExpectedConditions.elementToBeClickable(homePage.goToElectronicsLink));
 
@@ -101,7 +94,7 @@ public class SSMission {
         wait.until(ExpectedConditions.elementToBeClickable(electronicsSearchResultPage.sortByPriceLink));
         electronicsSearchResultPage.sortByPriceLink.click();
 
-        Wait<WebDriver> stubbornWait = new FluentWait<WebDriver>(driver)
+        Wait<WebDriver> stubbornWait = new FluentWait<>(driver)
                 .withTimeout(30, SECONDS)
                 .pollingEvery(5, SECONDS)
                 .ignoring(NoSuchElementException.class)
@@ -126,7 +119,7 @@ public class SSMission {
 
         searchElectronicsPage.searchStartButton.click();
 
-
+        int [] selectedAdNumbers = electronicsSearchResultPage.getRandomNumberArray(3);
         int firstSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
         int secondSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
         while (secondSelectedAd == firstSelectedAd) {
@@ -138,15 +131,15 @@ public class SSMission {
         }
 
 
-        WebElement firstAd = electronicsSearchResultPage.allAdvList.get(firstSelectedAd);
-        WebElement secondAd = electronicsSearchResultPage.allAdvList.get(secondSelectedAd);
-        WebElement thirdAd = electronicsSearchResultPage.allAdvList.get(thirdSelectedAd);
+//        WebElement firstAd = electronicsSearchResultPage.allAdvList.get(firstSelectedAd);
+//        WebElement secondAd = electronicsSearchResultPage.allAdvList.get(secondSelectedAd);
+//        WebElement thirdAd = electronicsSearchResultPage.allAdvList.get(thirdSelectedAd);
 
 
 
 
 
-
+/*
         List<WebElement> selectedAdsList = new ArrayList<>();
         selectedAdsList.add(firstAd);
         selectedAdsList.add(secondAd);
@@ -157,10 +150,13 @@ public class SSMission {
         String secondAdvText = electronicsSearchResultPage.getAdsText(secondAd);
         String thirdAdvText = electronicsSearchResultPage.getAdsText(thirdAd);
 
+        Roma thinks this is not necessary anymore. 02/03/16 16:00.
+       */
+
         List<String> textsOfSelectedAds = new ArrayList<>();
-        textsOfSelectedAds.add(firstAdvText);
-        textsOfSelectedAds.add(secondAdvText);
-        textsOfSelectedAds.add(thirdAdvText);
+        textsOfSelectedAds.add(electronicsSearchResultPage.getAdAndItsText(selectedAdNumbers[0]));
+        textsOfSelectedAds.add(electronicsSearchResultPage.getAdAndItsText(selectedAdNumbers[1]));
+        textsOfSelectedAds.add(electronicsSearchResultPage.getAdAndItsText(selectedAdNumbers[2]));
 
 
 
@@ -171,8 +167,8 @@ public class SSMission {
 
 
 
-        textsOfSelectedAds.add(firstAd.findElement(By.xpath(electronicsSearchResultPage.PATHTOADSTEXT)).getText());
-
+//        textsOfSelectedAds.add(firstAd.findElement(By.xpath(electronicsSearchResultPage.PATHTOADSTEXT)).getText());
+//          this is not needed right now too
 
 
 
