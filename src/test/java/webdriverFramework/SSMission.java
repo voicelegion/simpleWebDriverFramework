@@ -65,7 +65,6 @@ public class SSMission {
         ElectronicsPage electronicsPage = new ElectronicsPage(driver);
 
 
-
         assertTrue(homePage.switchLangToRuLink.isDisplayed());
 
         homePage.switchLangTo(Language.RU);
@@ -127,20 +126,48 @@ public class SSMission {
         searchElectronicsPage.searchStartButton.click();
 
 
-        int firstSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
-        int secondSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
-        while (secondSelectedAd == firstSelectedAd) {
-            secondSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
-        }
-        int thirdSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
-        while (thirdSelectedAd == secondSelectedAd || thirdSelectedAd == firstSelectedAd) {
-            thirdSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
+//        int randomNumberForFirstAd = randInt(electronicsSearchResultPage.allAdvList.size());
+//        int secondSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
+//        while (secondSelectedAd == randomNumberForFirstAd) {
+//            secondSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
+//        }
+//        int thirdSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
+//        while (thirdSelectedAd == secondSelectedAd || thirdSelectedAd == randomNumberForFirstAd) {
+//            thirdSelectedAd = randInt(electronicsSearchResultPage.allAdvList.size());
+//        }
+
+        List<WebElement> selectedAdsList = new ArrayList<>();
+
+
+        int randomNumber;
+        for (int i = 0; i < electronicsSearchResultPage.allAdvList.size(); i++) {
+//            while(randomNumber)
+            randomNumber = randInt(electronicsSearchResultPage.allAdvList.size());
+//            if(randInt(electronicsSearchResultPage.allAdvList.size())
+            selectedAdsList.add(electronicsSearchResultPage.allAdvList.get(randomNumber));
         }
 
 
-        WebElement firstAd = electronicsSearchResultPage.allAdvList.get(firstSelectedAd);
-        WebElement secondAd = electronicsSearchResultPage.allAdvList.get(secondSelectedAd);
-        WebElement thirdAd = electronicsSearchResultPage.allAdvList.get(thirdSelectedAd);
+//        WebElement firstAd = electronicsSearchResultPage.allAdvList.get(randomNumberForFirstAd);
+//        WebElement secondAd = electronicsSearchResultPage.allAdvList.get(secondSelectedAd);
+//        WebElement thirdAd = electronicsSearchResultPage.allAdvList.get(thirdSelectedAd);
+//
+//
+//
+//
+//
+//
+
+//
+//        selectedAdsList.add(firstAd);
+//        selectedAdsList.add(secondAd);
+//        selectedAdsList.add(thirdAd);
+
+        List<String> selectedAdsTextListForIlja = new ArrayList<>();
+
+        for (WebElement element : selectedAdsList) {
+            selectedAdsTextListForIlja.add(element.findElement(By.xpath(ElectronicsSearchResultPage.PATHTOADSTEXT)).getText());
+        }
 
 
         String firstAdvText = electronicsSearchResultPage.getAdsText(firstAd);
@@ -151,6 +178,10 @@ public class SSMission {
         textsOfSelectedAds.add(firstAdvText);
         textsOfSelectedAds.add(secondAdvText);
         textsOfSelectedAds.add(thirdAdvText);
+
+
+        textsOfSelectedAds.add(firstAd.findElement(By.xpath(electronicsSearchResultPage.PATHTOADSTEXT)).getText());
+
 
         electronicsSearchResultPage.selectAdsCheckbox(firstAd);
         electronicsSearchResultPage.selectAdsCheckbox(secondAd);
@@ -165,11 +196,12 @@ public class SSMission {
         textsOfSelectedFilteredAds.add(electronicsShowSelectedPage.getSelectedAdvText(electronicsShowSelectedPage.selectedAds.get(1)));
         textsOfSelectedFilteredAds.add(electronicsShowSelectedPage.getSelectedAdvText(electronicsShowSelectedPage.selectedAds.get(2)));
 
+
         Collections.sort(textsOfSelectedFilteredAds);
         Collections.sort(textsOfSelectedAds);
 
         for (int i = 0; i < textsOfSelectedAds.size(); i++) {
-           assertTrue(textsOfSelectedAds.get(i).contains(textsOfSelectedFilteredAds.get(i)));
+            assertTrue(textsOfSelectedAds.get(i).contains(textsOfSelectedFilteredAds.get(i)));
         }
 
     }
