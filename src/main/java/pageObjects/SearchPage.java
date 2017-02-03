@@ -22,8 +22,10 @@ public class SearchPage {
     public WebElement searchStartButton;
     @FindBy (xpath = "//*[@id='cmp_1']")
     public List<WebElement> searchSuggestionList;
-    
-    public WebElement searchFirstSuggestion = searchSuggestionList.get(0);
+
+    public WebElement getSearchFirstSuggestion() {
+       return searchSuggestionList.get(0);
+    }
 
     public SearchPage(WebDriver driver){
         this.driver = driver;
@@ -33,5 +35,6 @@ public class SearchPage {
         Select dropDown = new Select(searchPeriodDropdown);
         dropDown.selectByValue(String.valueOf(value));
     }
+
 
 }

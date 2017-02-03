@@ -13,14 +13,19 @@ import java.util.List;
  */
 public class ElectronicsShowSelectedPage {
     private WebDriver driver;
+
     @FindBy(xpath = "//*[contains(@id, 'tr_')][contains(@style, 'cursor')]")
     public List<WebElement> selectedAds;
 
-    public String selectedAdvText = driver.findElement(By.xpath(".//a[@id and @class]")).getText();
+//    @FindBy(xpath = ".//a[@id and @class]")
+//    public WebElement selectedAdvText;
 
 
     public ElectronicsShowSelectedPage(WebDriver driver){
         this.driver=driver;
         PageFactory.initElements(driver,this);
+    }
+    public String getSelectedAdvText(WebElement webElement){
+        return webElement.findElement(By.xpath(".//a[@id and @class]")).getText();
     }
 }

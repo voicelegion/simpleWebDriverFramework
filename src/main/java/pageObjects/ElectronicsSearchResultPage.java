@@ -1,5 +1,6 @@
 package pageObjects;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -24,16 +25,18 @@ public class ElectronicsSearchResultPage {
     @FindBy(xpath = "//*[contains(@id, 'tr_')]")
     public List<WebElement> allAdvList;
 
-    @FindBy(xpath = ".//input[@type='checkbox']")
-    public WebElement adsCheckbox;
+    public static final String PATHTOADSTEXT = ".//a[@id and @class]";
 
-    @FindBy(xpath = ".//a[@id and @class]")
-    public WebElement adsText;
+//    @FindBy(xpath = ".//input[@type='checkbox']")
+//    public WebElement adsCheckbox;
+
+//    @FindBy(xpath = ".//a[@id and @class]")
+//    public WebElement adsText;
 
 
 
-    public String getAdsText(){
-        return adsText.getText();
+    public String getAdsText(WebElement element){
+        return element.findElement(By.xpath(".//a[@id and @class]")).getText();
     }
 
 
@@ -42,5 +45,7 @@ public class ElectronicsSearchResultPage {
         this.driver = driver;
         PageFactory.initElements(driver,this);
     }
-
+    public void selectAdsCheckbox(WebElement webElement){
+        webElement.findElement(By.xpath(".//input[@type='checkbox']")).click();
+    }
 }
