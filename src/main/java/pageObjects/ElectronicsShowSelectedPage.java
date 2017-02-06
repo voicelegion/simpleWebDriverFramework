@@ -5,7 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +15,7 @@ import java.util.List;
  */
 public class ElectronicsShowSelectedPage {
     private WebDriver driver;
+    private WebDriverWait wait;
 
     @FindBy(xpath = "//*[contains(@id, 'tr_')][contains(@style, 'cursor')]")
     public List<WebElement> selectedAds;
@@ -24,8 +27,16 @@ public class ElectronicsShowSelectedPage {
     public ElectronicsShowSelectedPage(WebDriver driver){
         this.driver=driver;
         PageFactory.initElements(driver,this);
+        WebDriverWait wait = new WebDriverWait(driver, 5);
     }
     public String getSelectedAdvText(WebElement webElement){
         return webElement.findElement(By.xpath(".//a[@id and @class]")).getText();
+    }
+    public List<String> getOnlySelectedAdTexts(){
+        List<String> selectedAdTexts = new ArrayList<>();
+        for (int i = 0; i < selectedAds.size(); i++) {
+            selectedAdTexts.add(getSelectedAdvText(selectedAds.get(i)));
+        }
+        return selectedAdTexts;
     }
 }

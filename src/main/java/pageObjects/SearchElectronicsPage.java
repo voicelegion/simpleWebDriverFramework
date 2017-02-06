@@ -6,12 +6,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.HashMap;
 
 /**
  * Created by roman.pipchenko on 1/30/2017.
  */
 public class SearchElectronicsPage extends SearchPage{
     private WebDriver driver;
+    private WebDriverWait wait;
     @FindBy(xpath = "//*[@name='topt[8][min]']")
     public WebElement priceMinTextBox;
     @FindBy(xpath = "//*[@name='topt[8][max]']")
@@ -27,6 +31,7 @@ public class SearchElectronicsPage extends SearchPage{
     public SearchElectronicsPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver,this);
+        WebDriverWait wait = new WebDriverWait(driver, 5);
     }
 
     public void selectDealType(ValueForDealTypeDropdown value){
@@ -54,5 +59,8 @@ public class SearchElectronicsPage extends SearchPage{
     public void selectSortingBy(String value){
         Select dropDown = new Select(sortByDropdown);
         dropDown.selectByValue(value);
+    }
+    public void fillFieldsAndSubmit(HashMap hashMap){
+        
     }
 }

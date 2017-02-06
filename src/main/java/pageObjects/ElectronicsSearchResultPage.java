@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.stream.IntStream;
  */
 public class ElectronicsSearchResultPage {
     private WebDriver driver;
+    private WebDriverWait wait;
     @FindBy(xpath = "//*[text()=\"Цена\"][ancestor::*[@id=\"head_line\"]]")
     public WebElement sortByPriceLink;
 
@@ -50,6 +52,7 @@ public class ElectronicsSearchResultPage {
     public ElectronicsSearchResultPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
+        WebDriverWait wait = new WebDriverWait(driver, 5);
     }
 
     public void selectAdsCheckbox(WebElement webElement) {
@@ -81,6 +84,11 @@ public class ElectronicsSearchResultPage {
         return adTexts;
     }
 
-    public void selectSpecifiedAds(List<WebElement> AdList)
+    public void selectSpecifiedAds(int[] adNumberList){
+        WebElement element;
+        for (int i = 0; i < adNumberList.length; i++){
+            element = allAdvList.get(adNumberList[i]);
+            selectAdsCheckbox(element);        }
+    }
 
 }

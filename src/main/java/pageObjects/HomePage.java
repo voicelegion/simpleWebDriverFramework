@@ -6,6 +6,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static junit.framework.TestCase.assertTrue;
 
@@ -14,7 +16,7 @@ import static junit.framework.TestCase.assertTrue;
  */
 public class HomePage {
     private WebDriver driver;
-
+    private WebDriverWait wait;
     @FindBy(xpath = "//*[@href='/ru/']")
     public WebElement switchLangToRuLink;
     @FindBy(xpath = "//*[@href='/lv/']")
@@ -26,10 +28,11 @@ public class HomePage {
     public HomePage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
+        WebDriverWait wait = new WebDriverWait(driver, 5);
     }
 
 
-    public void switchLangTo(Language language) {
+    public HomePage switchLangTo(Language language) {
         switch (language) {
             case LV:
                 if (switchLangToLvLink.isDisplayed()) {
@@ -41,6 +44,18 @@ public class HomePage {
                     switchLangToRuLink.click();
                 }
         }
+        return this;
+    }
+    public SearchElectronicsPage goToSearchElectronicsPage(){
+        SearchElectronicsPage searchElectronicsPage = goToElectronicsPage().goToElectronicSearchPage();
+        wait.until(ExpectedConditions.elementToBeClickable(searchElectronicsPage.searchTextBox));
+        return searchElectronicsPage;
+    }
+
+    public ElectronicsPage goToElectronicsPage(){
+        wait.until(ExpectedConditions.elementToBeClickable(goToElectronicsLink));
+        goToElectronicsLink.click();
+        return new ElectronicsPage(driver);
     }
 }
 
