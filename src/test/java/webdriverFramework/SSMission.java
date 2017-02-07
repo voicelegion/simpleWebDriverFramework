@@ -4,7 +4,6 @@ package webdriverFramework;
 import enums.Browser;
 import enums.Language;
 import com.google.common.base.Function;
-import enums.ValueForDealTypeDropdown;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,11 +23,11 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static junit.framework.TestCase.assertTrue;
 
 
+
 public class SSMission {
 
     static WebDriver driver;
 
-//    public static String browser = "chrome";
     public static Browser browser = Browser.CHROME;
 
     @Rule
@@ -54,21 +53,6 @@ public class SSMission {
             driver = new FirefoxDriver();
             }
         }
-//        if (browser.equals("chrome")) {
-//
-//            File file = new File("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
-//            if (file.exists()) {
-//                System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\chromedriver.exe");
-//                driver = new ChromeDriver();
-//            }
-//        } else {
-//            File file = new File("C:\\tools\\Firefox\\", "firefox.exe");
-//            if (file.exists()) {
-//                System.setProperty("webdriver.firefox.bin", "C:\\tools\\Firefox\\firefox.exe");
-//            }
-//            System.setProperty("webdriver.gecko.driver", "src\\test\\resources\\geckodriver.exe");
-//            driver = new FirefoxDriver();
-//        }
     }
 
     @Test
@@ -80,21 +64,14 @@ public class SSMission {
         HomePage homePage = new HomePage(driver);
         homePage.switchLangTo(Language.RU);
 
-        SearchElectronicsPage searchElectronicsPage= homePage.goToSearchElectronicsPage();
+        SearchElectronicsPage searchElectronicsPage = homePage.goToSearchElectronicsPage();
 
+        HashMap hashMap = new HashMap();
+        hashMap.put("searchFor", "Laptop");
+        hashMap.put("dealType","SELL");
+        hashMap.put("region", "riga_f");
 
-        searchElectronicsPage.searchTextBox.sendKeys("Laptop");
-
-        wait.until(ExpectedConditions.textToBe(By.xpath("//*[@id='cmp_1']/*[contains(text(), 'Laptop')]"), "Laptop"));
-        searchElectronicsPage.getSearchFirstSuggestion().click();
-
-        wait.until(ExpectedConditions.elementToBeClickable(searchElectronicsPage.dealTypeDropdown));
-        searchElectronicsPage.selectDealType(ValueForDealTypeDropdown.SELL);
-
-
-        searchElectronicsPage.selectRegionByValue("riga_f");
-
-        searchElectronicsPage.searchStartButton.click();
+        searchElectronicsPage.fillFieldsAndSubmit(hashMap);
 
         ElectronicsSearchResultPage electronicsSearchResultPage = new ElectronicsSearchResultPage(driver);
         wait.until(ExpectedConditions.elementToBeClickable(electronicsSearchResultPage.sortByPriceLink));

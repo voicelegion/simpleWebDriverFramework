@@ -28,7 +28,7 @@ public class HomePage {
     public HomePage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
-        WebDriverWait wait = new WebDriverWait(driver, 5);
+         wait = new WebDriverWait(driver, 5);
     }
 
 

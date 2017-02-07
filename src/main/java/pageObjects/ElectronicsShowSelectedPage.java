@@ -27,7 +27,7 @@ public class ElectronicsShowSelectedPage {
     public ElectronicsShowSelectedPage(WebDriver driver){
         this.driver=driver;
         PageFactory.initElements(driver,this);
-        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait = new WebDriverWait(driver, 5);
     }
     public String getSelectedAdvText(WebElement webElement){
         return webElement.findElement(By.xpath(".//a[@id and @class]")).getText();

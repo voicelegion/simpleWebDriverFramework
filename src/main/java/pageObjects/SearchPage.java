@@ -32,11 +32,11 @@ public class SearchPage {
     public SearchPage(WebDriver driver){
         this.driver = driver;
         PageFactory.initElements(driver, this);
-        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait = new WebDriverWait(driver, 5);
     }
-    public void selectSearchPeriod(int value) {
+    public void selectSearchPeriod(String value) {
         Select dropDown = new Select(searchPeriodDropdown);
-        dropDown.selectByValue(String.valueOf(value));
+        dropDown.selectByValue(value);
     }
 
 

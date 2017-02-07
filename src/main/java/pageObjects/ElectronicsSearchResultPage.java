@@ -52,7 +52,7 @@ public class ElectronicsSearchResultPage {
     public ElectronicsSearchResultPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
-        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait = new WebDriverWait(driver, 5);
     }
 
     public void selectAdsCheckbox(WebElement webElement) {
