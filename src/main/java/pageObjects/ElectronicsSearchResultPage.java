@@ -1,16 +1,20 @@
 package pageObjects;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import com.google.common.base.Function;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * Created by roman.pipchenko on 1/30/2017.
@@ -29,19 +33,10 @@ public class ElectronicsSearchResultPage {
 
     @FindBy(xpath = "//*[contains(@id, 'tr_')]")
     public List<WebElement> allAdvList;
-
+    @FindBy(xpath = "//*[contains(@id, 'tr_')]//td[last()]/a")
+    public List<WebElement> allAdPriceList;
     public static final String PATHTOADSTEXT = ".//a[@id and @class]";
 
-//    @FindBy(xpath = ".//input[@type='checkbox']")
-//    public WebElement adsCheckbox;
-
-//    @FindBy(xpath = ".//a[@id and @class]")
-//    public WebElement adsText;
-
-
-//    public String getAdsText(WebElement element){
-//        return element.findElement(By.xpath(".//a[@id and @class]")).getText();
-//    }
 
     public String getAdAndItsText(int index) {
         WebElement element = allAdvList.get(index);
@@ -76,19 +71,61 @@ public class ElectronicsSearchResultPage {
         }
         return randomAdsNumbers;
     }
-    public List<String> createSelectedAdTextList(int[] selectedAdNumbers){
+
+    public List<String> createSelectedAdTextList(int[] selectedAdNumbers) {
         List<String> adTexts = new ArrayList<>();
-        for (int i = 0; i < selectedAdNumbers.length; i++){
+        for (int i = 0; i < selectedAdNumbers.length; i++) {
             adTexts.add(getAdAndItsText(selectedAdNumbers[i]));
         }
         return adTexts;
     }
 
-    public void selectSpecifiedAds(int[] adNumberList){
+    public void selectSpecifiedAds(int[] adNumberList) {
         WebElement element;
-        for (int i = 0; i < adNumberList.length; i++){
+        for (int i = 0; i < adNumberList.length; i++) {
             element = allAdvList.get(adNumberList[i]);
-            selectAdsCheckbox(element);        }
+            selectAdsCheckbox(element);
+        }
+    }
+
+        public void sortByPrice(){
+        wait.until(ExpectedConditions.elementToBeClickable(sortByPriceLink));
+        sortByPriceLink.click();
+        }
+    public List<Float> getPriceList() {
+        List<Float> priceList = new ArrayList<>();
+        for (WebElement element : allAdPriceList) {
+            String string=element.getText();
+            string = string.replaceAll("[^0-9]", "");
+            Float x = Float.valueOf(string);
+            priceList.add(x);
+        }
+        priceList = priceList.subList(0, 10);
+        return priceList;
+    }
+
+    public boolean isListSorted(List<Float> advPriceList) {
+        boolean listSorted = true;
+
+        for (int i = 0; i < advPriceList.size() - 1; i++) {
+            if (advPriceList.get(i) > advPriceList.get(i + 1)) {
+                listSorted = false;
+            }
+        }
+        return listSorted;
+    }
+
+    public Wait<WebDriver> getFluentWait(WebDriver driver) {
+        return new FluentWait<>(driver)
+                .withTimeout(30, SECONDS)
+                .pollingEvery(5, SECONDS)
+                .ignoring(NoSuchElementException.class)
+                .ignoring(StaleElementReferenceException.class)
+                .ignoring(IndexOutOfBoundsException.class);
+    }
+
+    public WebElement getFixedExpandedSearchLink(){
+        return getFluentWait(driver).until(driver -> expandedSearchLink);
     }
 
 }

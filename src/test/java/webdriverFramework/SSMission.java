@@ -3,13 +3,12 @@ package webdriverFramework;
 
 import enums.Browser;
 import enums.Language;
-import com.google.common.base.Function;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.openqa.selenium.*;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.*;
@@ -19,16 +18,15 @@ import java.io.File;
 import java.util.*;
 
 
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static junit.framework.TestCase.assertTrue;
-
+import static org.junit.Assert.assertFalse;
 
 
 public class SSMission {
 
     static WebDriver driver;
 
-    public static Browser browser = Browser.CHROME;
+    public static Browser browser = Browser.FIREFOX;
 
     @Rule
     public TestRule screenshotTaker = new ScreenshotTaker((TakesScreenshot) driver);
@@ -57,7 +55,6 @@ public class SSMission {
 
     @Test
     public void testSS() {
-        WebDriverWait wait = new WebDriverWait(driver, 5);
         driver.get("https://www.ss.lv/lv");
         driver.manage().window().maximize();
 
@@ -66,47 +63,33 @@ public class SSMission {
 
         SearchElectronicsPage searchElectronicsPage = homePage.goToSearchElectronicsPage();
 
-        HashMap hashMap = new HashMap();
-        hashMap.put("searchFor", "Laptop");
-        hashMap.put("dealType","SELL");
-        hashMap.put("region", "riga_f");
+        HashMap firstValueSetHashMap = new HashMap();
+        firstValueSetHashMap.put("searchFor", "Laptop");
+        firstValueSetHashMap.put("dealType","SELL");
+        firstValueSetHashMap.put("region", "riga_f");
 
-        searchElectronicsPage.fillFieldsAndSubmit(hashMap);
+        searchElectronicsPage.fillFieldsAndSubmit(firstValueSetHashMap);
 
         ElectronicsSearchResultPage electronicsSearchResultPage = new ElectronicsSearchResultPage(driver);
-        wait.until(ExpectedConditions.elementToBeClickable(electronicsSearchResultPage.sortByPriceLink));
-        electronicsSearchResultPage.sortByPriceLink.click();
+        assertFalse(electronicsSearchResultPage.isListSorted(electronicsSearchResultPage.getPriceList()));
+        electronicsSearchResultPage.sortByPrice();
+        Assert.assertTrue(electronicsSearchResultPage.isListSorted(electronicsSearchResultPage.getPriceList()));
 
-        Wait<WebDriver> stubbornWait = new FluentWait<>(driver)
-                .withTimeout(30, SECONDS)
-                .pollingEvery(5, SECONDS)
-                .ignoring(NoSuchElementException.class)
-                .ignoring(StaleElementReferenceException.class);
+        electronicsSearchResultPage.getFixedExpandedSearchLink().click();
 
-        WebElement foo = stubbornWait.until(new Function<WebDriver, WebElement>() {
-            public WebElement apply(WebDriver driver) {
-                return electronicsSearchResultPage.expandedSearchLink;
-            }
-        });
-        foo.click();
+        HashMap secondValueSetHashMap = new HashMap();
+        secondValueSetHashMap.put("priceMin","0");
+        secondValueSetHashMap.put("priceMax","300");
+        secondValueSetHashMap.put("sortBy","8");
 
-
-//        wait.until(ExpectedConditions.urlContains("search/"));
-//        assertEquals("https://www.ss.lv/ru/electronics/search/", driver.getCurrentUrl());
-        searchElectronicsPage.priceMinTextBox.sendKeys("0");
-
-        searchElectronicsPage.priceMaxTextBox.sendKeys("300");
-
-        searchElectronicsPage.selectSortingBy("8");
-
-        searchElectronicsPage.searchStartButton.click();
+        searchElectronicsPage.fillFieldsAndSubmit(secondValueSetHashMap);
 
         int[] selectedAdNumbers = electronicsSearchResultPage.getRandomNumberArray(3);
 
         List<String> textsOfSelectedAds = electronicsSearchResultPage.createSelectedAdTextList(selectedAdNumbers);
 
-
         electronicsSearchResultPage.selectSpecifiedAds(selectedAdNumbers);
+
         electronicsSearchResultPage.showSelectedAdsButton.click();
 
         ElectronicsShowSelectedPage electronicsShowSelectedPage = new ElectronicsShowSelectedPage(driver);
