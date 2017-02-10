@@ -38,24 +38,6 @@ public class SSMissionTest {
 
     @BeforeClass
     public static void setup() throws IOException {
-//        browser =  Browser.valueOf(ConfigReader.getConfigValue("browser").toUpperCase());
-//        Properties properties = new Properties();
-//        try {
-//            input = new FileInputStream("config.properties");
-//            properties.load(input);
-//            browser = Browser.valueOf(properties.getProperty("browser").toUpperCase());
-//        } catch (IOException e) {
-//        } finally {
-//            if (input != null) {
-//                try {
-//                    input.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-
-
 
         switch (browser)
 
