@@ -14,7 +14,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.*;
 import pageObjects.*;
 
-import java.io.File;
+import java.io.*;
 import java.util.*;
 
 
@@ -22,39 +22,64 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 
-public class SSMission {
+public class SSMissionTest {
 
     static WebDriver driver;
+//    String directory = "C:\\Users\\roman.pipchenko\\TestFolder\\simpleWebDriverFramework\\src\\test\\resources";
+//    File browserInfoDirectory = new File(directory);
 
-    public static Browser browser = Browser.FIREFOX;
+    //    browserInfoDirectory.mkdir();
+    public static Browser browser = Browser.valueOf( !System.getProperty("browser").equals("null") ? System.getProperty("browser").toUpperCase() : ConfigReader.getConfigValue("browser").toUpperCase());
+
+
 
     @Rule
     public TestRule screenshotTaker = new ScreenshotTaker((TakesScreenshot) driver);
 
     @BeforeClass
-    public static void setup() {
-        switch (browser){
-            case CHROME:{
-            File file = new File("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
-            if (file.exists()) {
+    public static void setup() throws IOException {
+//        browser =  Browser.valueOf(ConfigReader.getConfigValue("browser").toUpperCase());
+//        Properties properties = new Properties();
+//        try {
+//            input = new FileInputStream("config.properties");
+//            properties.load(input);
+//            browser = Browser.valueOf(properties.getProperty("browser").toUpperCase());
+//        } catch (IOException e) {
+//        } finally {
+//            if (input != null) {
+//                try {
+//                    input.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+
+
+
+        switch (browser)
+
+        {
+            case CHROME: {
                 System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\chromedriver.exe");
                 driver = new ChromeDriver();
+                break;
             }
-            break;
-        }
-            case FIREFOX:{
+            case FIREFOX: {
                 File file = new File("C:\\tools\\Firefox\\", "firefox.exe");
-            if (file.exists()) {
-                System.setProperty("webdriver.firefox.bin", "C:\\tools\\Firefox\\firefox.exe");
-            }
-            System.setProperty("webdriver.gecko.driver", "src\\test\\resources\\geckodriver.exe");
-            driver = new FirefoxDriver();
+                if (file.exists()) {
+                    System.setProperty("webdriver.firefox.bin", "C:\\tools\\Firefox\\firefox.exe");
+                }
+                System.setProperty("webdriver.gecko.driver", "src\\test\\resources\\geckodriver.exe");
+                driver = new FirefoxDriver();
             }
         }
+
     }
 
     @Test
     public void testSS() {
+        System.out.println(System.getProperty("huj"));
         driver.get("https://www.ss.lv/lv");
         driver.manage().window().maximize();
 
@@ -65,7 +90,7 @@ public class SSMission {
 
         HashMap firstValueSetHashMap = new HashMap();
         firstValueSetHashMap.put("searchFor", "Laptop");
-        firstValueSetHashMap.put("dealType","SELL");
+        firstValueSetHashMap.put("dealType", "SELL");
         firstValueSetHashMap.put("region", "riga_f");
 
         searchElectronicsPage.fillFieldsAndSubmit(firstValueSetHashMap);
@@ -78,9 +103,9 @@ public class SSMission {
         electronicsSearchResultPage.getFixedExpandedSearchLink().click();
 
         HashMap secondValueSetHashMap = new HashMap();
-        secondValueSetHashMap.put("priceMin","0");
-        secondValueSetHashMap.put("priceMax","300");
-        secondValueSetHashMap.put("sortBy","8");
+        secondValueSetHashMap.put("priceMin", "0");
+        secondValueSetHashMap.put("priceMax", "300");
+        secondValueSetHashMap.put("sortBy", "8");
 
         searchElectronicsPage.fillFieldsAndSubmit(secondValueSetHashMap);
 
@@ -105,3 +130,4 @@ public class SSMission {
     }
 
 }
+/* ukazyvat' browser cherez txt fail */
