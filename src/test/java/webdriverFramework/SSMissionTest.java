@@ -1,18 +1,16 @@
 package webdriverFramework;
 
 
+import config.DriverFactory;
 import enums.Browser;
 import enums.Language;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.TestRule;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.*;
+
 import pageObjects.*;
+import utils.ConfigReader;
+import utils.ScreenshotTaker;
 
 import java.io.*;
 import java.util.*;
@@ -24,44 +22,18 @@ import static org.junit.Assert.assertFalse;
 
 public class SSMissionTest {
 
-    static WebDriver driver;
-//    String directory = "C:\\Users\\roman.pipchenko\\TestFolder\\simpleWebDriverFramework\\src\\test\\resources";
-//    File browserInfoDirectory = new File(directory);
-
-    //    browserInfoDirectory.mkdir();
-    public static Browser browser = Browser.valueOf( !System.getProperty("browser").equals("null") ? System.getProperty("browser").toUpperCase() : ConfigReader.getConfigValue("browser").toUpperCase());
-
-
+    private Browser browser = Browser.valueOf(!(System.getProperty("browser")== null) ? System.getProperty("browser").toUpperCase() : ConfigReader.getConfigValue("browser").toUpperCase());
+    private WebDriver driver = DriverFactory.initiliazeDriver(browser);
 
     @Rule
     public TestRule screenshotTaker = new ScreenshotTaker((TakesScreenshot) driver);
 
-    @BeforeClass
-    public static void setup() throws IOException {
+//    public SSMissionTest() throws IOException {
+//    }
 
-        switch (browser)
-
-        {
-            case CHROME: {
-                System.setProperty("webdriver.chrome.driver", "src\\test\\resources\\chromedriver.exe");
-                driver = new ChromeDriver();
-                break;
-            }
-            case FIREFOX: {
-                File file = new File("C:\\tools\\Firefox\\", "firefox.exe");
-                if (file.exists()) {
-                    System.setProperty("webdriver.firefox.bin", "C:\\tools\\Firefox\\firefox.exe");
-                }
-                System.setProperty("webdriver.gecko.driver", "src\\test\\resources\\geckodriver.exe");
-                driver = new FirefoxDriver();
-            }
-        }
-
-    }
 
     @Test
     public void testSS() {
-        System.out.println(System.getProperty("huj"));
         driver.get("https://www.ss.lv/lv");
         driver.manage().window().maximize();
 
@@ -109,7 +81,8 @@ public class SSMissionTest {
         for (int i = 0; i < textsOfSelectedAds.size(); i++) {
             assertTrue(textsOfSelectedAds.get(i).contains(textsOfSelectedFilteredAds.get(i)));
         }
+        driver.quit();
+        assertTrue(driver.toString().contains("null"));
     }
 
 }
-/* ukazyvat' browser cherez txt fail */
